@@ -1,5 +1,5 @@
 const express = require('express');
-const dbConnection = require('./../database/Config');
+const dbConnection = require('../database/Config');
 const MaterialController = require("../controllers/MaterialController");
 
 const router = express.Router();
