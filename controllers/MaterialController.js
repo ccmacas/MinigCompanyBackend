@@ -79,7 +79,7 @@ const destroyMaterial=(req,res,next)=>{
         }
     })
     .catch(err =>{
-        res.status(500).json({ message: "No se puedo realizar la eliminación del material "+err });
+        res.status(500).json({ message: "No se puedo realizar la eliminación del materials"+err });
     })
 }
 
