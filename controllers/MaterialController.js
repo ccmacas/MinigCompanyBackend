@@ -3,9 +3,9 @@ const MaterialModel = require("../models/Materiales");
 
 const materiales =  ((req, res)=>{
     MaterialModel.find()
-    .then(response =>{
+    .then(Material =>{
         res.status(200).json({
-            response
+            Material
         })
     })
     .catch(err =>{
@@ -34,7 +34,6 @@ const addMaterial =  ((req, res)=>{
         detalle:  req.body.detalle,
         categoria:  req.body.categoria,
         fecha: req.body.fecha,
-        inventario: req.body.inventario,
     });
     material.save()
     .then(response =>{
@@ -55,17 +54,35 @@ const UpdateMaterial =  ((req, res)=>{
         detalle:  req.body.detalle,
         categoria:  req.body.categoria,
         fecha: req.body.fecha,
-        inventario: req.body.inventario,
-    });
-    MaterialModel.findByIdAndUpdate(material_ID,{$set:updateMaterial})
+    },{ _id: false });
+    //console.log(updateMaterial);
+    MaterialModel.findByIdAndUpdate(material_ID,{$set:updateMaterial},{ new: true })
     .then(response =>{
-        res.status(200).json({ message: "Material actualizado" })
+        if (response) {
+            res.status(200).json({ message: "Material actualizado" });
+        } else {
+            res.status(404).json({ message: "Material no encontrado" });
+        }
     })
     .catch(err =>{
-        res.status(500).json({ message: "No se puedo realizar la actualizacion del material" });
+        res.status(500).json({ message: "No se puedo realizar la actualizacion del material"+err });
     })
 })
+const destroyMaterial=(req,res,next)=>{
+    let material_ID = req.params.id;
+    MaterialModel.findByIdAndDelete(material_ID)
+    .then(response =>{
+        if (response) {
+            res.status(200).json({ message: "Material eliminado" });
+        } else {
+            res.status(404).json({ message: "Material no encontrado" });
+        }
+    })
+    .catch(err =>{
+        res.status(500).json({ message: "No se puedo realizar la eliminación del material "+err });
+    })
+}
 
 module.exports = {
-    materiales,materialID,addMaterial,UpdateMaterial
+    materiales,materialID,addMaterial,UpdateMaterial,destroyMaterial
 }

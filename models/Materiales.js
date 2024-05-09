@@ -20,9 +20,6 @@ const materialSchema = new schema({
     fecha:{
         type: Date
     },
-    inventario:{
-        type: String
-    }
 },{timestamps:true})
 
 const material = mongoose.model('Material', materialSchema);
