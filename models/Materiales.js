@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
-
+const InPut = require("./InPut");
 const materialSchema = new schema({
     nombreMaterial:{
         type: String
@@ -20,6 +20,7 @@ const materialSchema = new schema({
     fecha:{
         type: Date
     },
+    entradas:[InPut]
 },{timestamps:true})
 
 const material = mongoose.model('Material', materialSchema);
