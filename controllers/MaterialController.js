@@ -3,6 +3,7 @@ const MaterialModel = require("../models/Materiales");
 
 const materiales =  ((req, res)=>{
     MaterialModel.find()
+    .sort({ saldo: 1 })
     .then(Material =>{
         res.status(200).json({
             Material
@@ -12,7 +13,17 @@ const materiales =  ((req, res)=>{
         res.status(500).json({ message: "no se puedo obtener los materiales" });
     })
 })
-
+const materialesCategoria =  ((req, res)=>{
+    const categoria = req.params.categoria;
+    MaterialModel.find({ categoria: categoria })
+    .sort({ saldo: 1 })
+    .then(Material => {
+        res.status(200).json({ Material });
+    })
+    .catch(err => {
+        res.status(500).json({ message: "No se pudo obtener los materiales: " + err });
+    });
+})
 const materialID =  ((req, res)=>{
     let material_ID = req.params.material_ID;
     MaterialModel.findById(material_ID)
@@ -36,6 +47,7 @@ const addMaterial =  ((req, res)=>{
         detalle:  req.body.detalle,
         categoria:  req.body.categoria,
         fecha: req.body.fecha,
+        saldo: req.body.cantidad,
         entradas:[{
             fecha: new Date(),
             cantidad: req.body.cantidad,
@@ -57,6 +69,7 @@ const UpdateMaterial =  (async(req, res)=>{
         nombreMaterial: req.body.nombreMaterial,
         precio: req.body.precio,
         cantidad: req.body.cantidad,
+        saldo: req.body.cantidad,
         detalle:  req.body.detalle,
         categoria:  req.body.categoria,
         fecha: req.body.fecha,
@@ -88,17 +101,23 @@ const AddMaterialSalida = (async (req, res)=>{
         observacion:req.body.salida.observacion
     };
     try {
-        const material = await MaterialModel.findById(ID)
+        
+        let material = await MaterialModel.findById(ID)
         if (!material) {
             return res.status(404).json({ message: "Material no encontrado",status:false });
         }
+        let cantTotal = (material.saldo - req.body.salida.cantidad);
+        const updateMaterial={
+            saldo:cantTotal
+        }
+        Object.assign(material, updateMaterial);
         material.entradas = material.entradas || [];
         if (material.entradas.length === 0) {
             return res.status(404).json({ message: "No hay entradas registradas para este material",status:false });
         }
         const ultimaEntrada = material.entradas[material.entradas.length - 1];
         let valor = req.body.salida.cantidad;
-        if(valor>ultimaEntrada.cantidad){
+        if(valor>ultimaEntrada.cantidad && cantTotal>material.saldo){
             return res.status(404).json({ message: "El valor esta fuera del límite en el inventario",status:false });
         }else{
             let total = (ultimaEntrada.cantidad - req.body.salida.cantidad)
@@ -168,5 +187,5 @@ const destroyMaterial=(req,res,next)=>{
 }
 
 module.exports = {
-    materiales,materialID,addMaterial,UpdateMaterial,destroyMaterial,AddMaterialSalida,allInputs,allOutputs
+    materiales,materialID,materialesCategoria,addMaterial,UpdateMaterial,destroyMaterial,AddMaterialSalida,allInputs,allOutputs
 }

@@ -5,6 +5,7 @@ const MaterialController = require("../controllers/MaterialController");
 const router = express.Router();
 
 router.get("/Materiales/",MaterialController.materiales)
+router.get("/MaterialCategoria/:categoria",MaterialController.materialesCategoria)
 router.get("/Material/:material_ID",MaterialController.materialID)
 router.post("/AddMaterial",MaterialController.addMaterial)
 router.put("/UpdateMaterial",MaterialController.UpdateMaterial)

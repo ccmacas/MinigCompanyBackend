@@ -11,6 +11,9 @@ const materialSchema = new schema({
     cantidad:{
         type: Number
     },
+    saldo:{
+        type:Number
+    },
     detalle:{
         type: String
     },
