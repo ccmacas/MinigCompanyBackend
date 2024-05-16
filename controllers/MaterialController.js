@@ -117,7 +117,7 @@ const AddMaterialSalida = (async (req, res)=>{
         }
         const ultimaEntrada = material.entradas[material.entradas.length - 1];
         let valor = req.body.salida.cantidad;
-        if(valor>ultimaEntrada.cantidad && cantTotal>material.saldo){
+        if(valor>ultimaEntrada.cantidad){
             return res.status(404).json({ message: "El valor esta fuera del límite en el inventario",status:false });
         }else{
             let total = (ultimaEntrada.cantidad - req.body.salida.cantidad)
