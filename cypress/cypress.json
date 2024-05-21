@@ -1,0 +1,6 @@
+{
+  "testFiles": "**/*.spec.js",
+  "ignoreTestFiles": [
+    "materialTests.cy.js"
+  ]
+}

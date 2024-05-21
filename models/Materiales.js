@@ -11,6 +11,9 @@ const materialSchema = new schema({
     cantidad:{
         type: Number
     },
+    udm:{
+        type: String
+    },
     saldo:{
         type:Number
     },

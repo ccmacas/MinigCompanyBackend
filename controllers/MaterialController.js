@@ -44,6 +44,7 @@ const addMaterial =  ((req, res)=>{
         nombreMaterial: req.body.nombreMaterial,
         precio: req.body.precio,
         cantidad: req.body.cantidad,
+        udm: req.body.udm,
         detalle:  req.body.detalle,
         categoria:  req.body.categoria,
         fecha: req.body.fecha,
@@ -69,6 +70,7 @@ const UpdateMaterial =  (async(req, res)=>{
         nombreMaterial: req.body.nombreMaterial,
         precio: req.body.precio,
         cantidad: req.body.cantidad,
+        udm: req.body.udm,
         saldo: req.body.cantidad,
         detalle:  req.body.detalle,
         categoria:  req.body.categoria,
@@ -98,6 +100,7 @@ const AddMaterialSalida = (async (req, res)=>{
         fecha: req.body.salida.fecha,
         nombreTrabajador:req.body.salida.nombreTrabajador,
         cantidad:req.body.salida.cantidad,
+        udm:req.body.salida.udm,
         observacion:req.body.salida.observacion
     };
     try {

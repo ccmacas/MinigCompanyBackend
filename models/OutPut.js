@@ -11,6 +11,9 @@ const OutPutSchema = new schema({
     cantidad:{
         type: Number
     },
+    udm:{
+        type: String
+    },
     observacion:{
         type: String
     },
