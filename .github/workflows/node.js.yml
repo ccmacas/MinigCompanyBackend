@@ -26,4 +26,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install
+    - name: Install dependencies
+      run: npm install
+
+    - name: Start server
+      run: |
+        nohup npm start &
+        sleep 60 # Asegura que el servidor tenga tiempo de iniciarse
+
+    - name: Run tests
+      run: npm run cypress:run
+
+    - name: Stop server
+      run: |
+        fuser -k 3000/tcp # Finaliza el servidor

@@ -6,11 +6,12 @@ const materiales =  ((req, res)=>{
     .sort({ saldo: 1 })
     .then(Material =>{
         res.status(200).json({
-            Material
+            Material,
+            status:true
         })
     })
     .catch(err =>{
-        res.status(500).json({ message: "no se puedo obtener los materiales" });
+        res.status(500).json({ message: "no se puedo obtener los materiales",status:false });
     })
 })
 const materialesCategoria =  ((req, res)=>{
@@ -18,24 +19,24 @@ const materialesCategoria =  ((req, res)=>{
     MaterialModel.find({ categoria: categoria })
     .sort({ saldo: 1 })
     .then(Material => {
-        res.status(200).json({ Material });
+        res.status(200).json({ Material,status:true });
     })
     .catch(err => {
-        res.status(500).json({ message: "No se pudo obtener los materiales: " + err });
+        res.status(500).json({ message: "No se pudo obtener los materiales: " + err, status:false });
     });
 })
 const materialID =  ((req, res)=>{
     let material_ID = req.params.material_ID;
     MaterialModel.findById(material_ID)
-    .then(material =>{
-        if (material) {
-            res.status(200).json({material});
+    .then(Material =>{
+        if (Material) {
+            res.status(200).json({Material});
         } else {
             res.status(404).json({ message: "Material no encontrado",status:false });
         }
     })
     .catch(err =>{
-        res.status(500).json({ message: "no se puedo obtener el material por su identificador" });
+        res.status(500).json({ message: "no se puedo obtener el material por su identificador",status:false });
     })
 })
 
@@ -55,11 +56,11 @@ const addMaterial =  ((req, res)=>{
         }]
     });
     material.save()
-    .then(response =>{
-        res.status(200).json({ message: "Material registrado" })
+    .then(material =>{
+        res.status(200).json({ message: "Material registrado",material,status:true })
     })
     .catch(err =>{
-        res.status(500).json({ message: "No se puedo guardar el material" });
+        res.status(500).json({ message: "No se puedo guardar el material",status:false });
     })
 })
 
@@ -89,9 +90,10 @@ const UpdateMaterial =  (async(req, res)=>{
         material.entradas.push(nuevaEntrada);
 
         material = await material.save();
-        return res.status(200).json({ message: "Material actualizado con éxito" });
+        return res.status(200).json({ message: "Material actualizado con éxito", material,status:true });
+        
     } catch (error) {
-        return res.status(500).json({ message: "Error al actualizar el material: " + error });
+        return res.status(500).json({ message: "Error al actualizar el material: " + error,status:false });
     }
 })
 const AddMaterialSalida = (async (req, res)=>{
@@ -131,10 +133,10 @@ const AddMaterialSalida = (async (req, res)=>{
             ultimaEntrada.salidas = ultimaEntrada.salidas || [];
             ultimaEntrada.salidas.push(salida);
             material = await material.save(); 
-            res.status(200).json({ message: "Salida registrada" });
+            res.status(200).json({ message: "Salida registrada",status:true });
         }        
     } catch (error) {
-        res.status(500).json({ message: "Error al obtener la última entrada: " + error });
+        res.status(500).json({ message: "Error al obtener la última entrada: " + error,status:false });
     }
 })
 
@@ -144,13 +146,13 @@ const allInputs =  ((req, res)=>{
     .then(material =>{
         if (material) {
             let entradas = material.entradas;
-            res.status(200).json({entradas});
+            res.status(200).json({entradas,status:true});
         } else {
             res.status(404).json({ message: "Material no encontrado",status:false });
         }
     })
     .catch(err =>{
-        res.status(500).json({ message: "no se puedo obtener el material por su identificador" });
+        res.status(500).json({ message: "no se puedo obtener el material por su identificador",status:false });
     })
 })
 const allOutputs =  ((req, res)=>{
@@ -165,13 +167,13 @@ const allOutputs =  ((req, res)=>{
                 return;
             }
             const salidas = entrada.salidas || []
-            res.status(200).json({salidas});
+            res.status(200).json({salidas,status:true});
         } else {
             res.status(404).json({ message: "Material no encontrado",status:false });
         }
     })
     .catch(err =>{
-        res.status(500).json({ message: "no se puedo obtener el material por su identificador" });
+        res.status(500).json({ message: "no se puedo obtener el material por su identificador",status:false });
     })
 })
 const destroyMaterial=(req,res,next)=>{
@@ -179,13 +181,13 @@ const destroyMaterial=(req,res,next)=>{
     MaterialModel.findByIdAndDelete(material_ID)
     .then(response =>{
         if (response) {
-            res.status(200).json({ message: "Material eliminado" });
+            res.status(200).json({ message: "Material eliminado",status:true });
         } else {
-            res.status(404).json({ message: "Material no encontrado" });
+            res.status(404).json({ message: "Material no encontrado",status:false });
         }
     })
     .catch(err =>{
-        res.status(500).json({ message: "No se puedo realizar la eliminación del materials"+err });
+        res.status(500).json({ message: "No se puedo realizar la eliminación del materials "+err,status:false });
     })
 }
 
