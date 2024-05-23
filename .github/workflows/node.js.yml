@@ -32,7 +32,7 @@ jobs:
     - name: Start server
       run: |
         nohup npm start &
-        sleep 60 # Asegura que el servidor tenga tiempo de iniciarse
+        sleep 30 # Asegura que el servidor tenga tiempo de iniciarse
 
     - name: Run tests
       run: npm run cypress:run
