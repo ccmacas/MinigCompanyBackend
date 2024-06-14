@@ -6,6 +6,7 @@ const materialRoutes = require('./routes/MaterialsRoute');
 const AuthRoutes = require('./routes/AuthRoute');
 const CategoryRouter = require('./routes/CategoriesRoute')
 const UNDMRouter = require('./routes/UDMRoute')
+const uniformRouter = require('./routes/UniformsRoute')
 
 const corsOptions = {
   origin: '*', // Reemplaza con tu dominio permitido
@@ -22,6 +23,7 @@ app.use('/ApiMinig/Materiales', materialRoutes);
 app.use('/ApiMinig/Autenticacion', AuthRoutes);
 app.use('/ApiMinig/Categorias', CategoryRouter);
 app.use('/ApiMinig/UnidadesDM', UNDMRouter);
+app.use('/ApiMinig/Uniformes',uniformRouter);
 
 const port = 3000; // Cambia esto al puerto que desees utilizar
 app.listen(port, () => {
